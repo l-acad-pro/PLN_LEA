@@ -1,4 +1,5 @@
 import wikipediaapi
+import re
 from tkinter import SOLID, messagebox, filedialog, simpledialog
 import tkinter as tk
 import tkinter.ttk as tk2
@@ -95,11 +96,13 @@ def atualizar_visualizacao():
         wk_fonte.pack_forget()
         frame_texto.pack(padx=10, pady=10, fill=tk.BOTH, expand=True)
         texto_etiqueta1.pack(padx=5, pady=5)
-        Texto_texto.pack(padx=5, pady=5)
+        Texto_texto.pack(padx=5, pady=5, fill=tk.BOTH, expand=True)
+        texto_botao_limpar.pack(padx=5, pady=5)
     else:  # wikipedia
         frame_texto.pack_forget()
         texto_etiqueta1.pack_forget()
         Texto_texto.pack_forget()
+        texto_botao_limpar.pack_forget()
         frame_wiki.pack(padx=10, pady=10, fill=tk.BOTH, expand=True)
         wk_etiqueta1.pack(padx=5, pady=5)
         wk_entrada1.pack(padx=5, pady=5)
@@ -124,7 +127,8 @@ janelaPrincipal.config(menu=menu_bar)
 
 # Cria um menu "Arquivo"
 arquivo_menu = tk.Menu(menu_bar, tearoff=0)
-arquivo_menu.add_command(label="Abrir Arquivo", command=abrir_arquivo)
+arquivo_menu.add_command(label="Abrir Arquivo", accelerator="Ctrl+O", command=abrir_arquivo)
+janelaPrincipal.bind_all("<Control-o>", lambda event: abrir_arquivo())
 arquivo_menu.add_separator()  # linha separadora
 arquivo_menu.add_command(label="Sair")
 menu_bar.add_cascade(label="Arquivo", menu=arquivo_menu)
@@ -159,6 +163,24 @@ radio_wiki.pack(side=tk.LEFT, padx=10, pady=5)
 frame_texto = tk2.Frame(janelaPrincipal)
 texto_etiqueta1 = tk2.Label(frame_texto, text="Insira o texto ou importe um txt:")
 Texto_texto = tk.Text(frame_texto)
+texto_botao_limpar = tk2.Button(frame_texto, text="Limpar Texto")
+
+def limpar_texto():
+    confirmar = messagebox.askyesno(
+        "Confirmar limpeza",
+        "A limpeza removerá todos os sinais de pontuação e deixará todas as letras em minúscula.\n\nDeseja continuar?",
+        parent=janelaPrincipal
+    )
+    if not confirmar:
+        return
+
+    conteudo = Texto_texto.get("1.0", tk.END)
+    sem_pontuacao = re.sub(r"[^\w\s]", "", conteudo)
+    resultado = sem_pontuacao.lower()
+    Texto_texto.delete("1.0", tk.END)
+    Texto_texto.insert(tk.END, resultado)
+
+texto_botao_limpar.config(command=limpar_texto)
 
 # Frame para Wikipedia
 frame_wiki = tk2.Frame(janelaPrincipal)
