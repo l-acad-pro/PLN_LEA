@@ -87,13 +87,7 @@ def atualizar_visualizacao():
     # Mostra o frame selecionado
     if opcao_visualizacao.get() == "texto":
         frame_wiki.pack_forget()
-        wk_etiqueta1.pack_forget()
-        wk_entrada1.pack_forget()
-        wk_etiqueta2.pack_forget()
-        wk_texto1.pack_forget()
-        wk_botao1.pack_forget()
-        wk_etiqueta3.pack_forget()
-        wk_fonte.pack_forget()
+        wk_paned.pack_forget()
         frame_texto.pack(padx=10, pady=10, fill=tk.BOTH, expand=True)
         texto_etiqueta1.pack(padx=5, pady=5)
         Texto_texto.pack(padx=5, pady=5, fill=tk.BOTH, expand=True)
@@ -104,13 +98,7 @@ def atualizar_visualizacao():
         Texto_texto.pack_forget()
         texto_botao_limpar.pack_forget()
         frame_wiki.pack(padx=10, pady=10, fill=tk.BOTH, expand=True)
-        wk_etiqueta1.pack(padx=5, pady=5)
-        wk_entrada1.pack(padx=5, pady=5)
-        wk_botao1.pack(padx=5, pady=5)
-        wk_etiqueta2.pack(padx=5, pady=5)
-        wk_texto1.pack(padx=5, pady=5)
-        wk_etiqueta3.pack(side=tk.LEFT, padx=5, pady=5)
-        wk_fonte.pack(side=tk.LEFT, padx=5, pady=5)
+        wk_paned.pack(fill=tk.BOTH, expand=True, padx=5, pady=5)
 
 
 janelaPrincipal = tk.Tk()
@@ -128,7 +116,7 @@ janelaPrincipal.config(menu=menu_bar)
 # Cria um menu "Arquivo"
 arquivo_menu = tk.Menu(menu_bar, tearoff=0)
 arquivo_menu.add_command(label="Abrir Arquivo", accelerator="Ctrl+O", command=abrir_arquivo)
-janelaPrincipal.bind_all("<Control-o>", lambda event: abrir_arquivo())
+janelaPrincipal.bind("<Control-o>", lambda event: abrir_arquivo())
 arquivo_menu.add_separator()  # linha separadora
 arquivo_menu.add_command(label="Sair")
 menu_bar.add_cascade(label="Arquivo", menu=arquivo_menu)
@@ -147,10 +135,8 @@ ajuda_menu.add_command(label="Sobre", command=lambda: messagebox.showinfo("Sobre
 menu_bar.add_cascade(label="Ajuda", menu=ajuda_menu)
 
 # Radio Buttons para seleção de visualização
-frame_opcoes = tk2.Frame(janelaPrincipal, borderwidth=2, relief=SOLID)
+frame_opcoes = tk2.LabelFrame(janelaPrincipal)
 frame_opcoes.pack(side=tk.TOP, padx=10, pady=10)
-opcao_etiqueta = tk2.Label(frame_opcoes, text="Selecione a fonte de dados:")
-opcao_etiqueta.pack(side=tk.LEFT, padx=10, pady=5)
 opcao_visualizacao = tk.StringVar(value="")  # Texto selecionado por padrão
 radio_texto = tk2.Radiobutton(frame_opcoes, text="Personalizada", variable=opcao_visualizacao, 
                               value="texto", command=atualizar_visualizacao)
@@ -182,14 +168,34 @@ def limpar_texto():
 
 texto_botao_limpar.config(command=limpar_texto)
 
-# Frame para Wikipedia
+# Frame para Wikipedia com PanedWindow
 frame_wiki = tk2.Frame(janelaPrincipal)
-wk_etiqueta1 = tk2.Label(frame_wiki, text="Digite o título da página da Wikipedia:")
-wk_entrada1 = tk2.Entry(frame_wiki)
-wk_botao1 = tk2.Button(frame_wiki, text="Buscar", command=wk_buscar)
-wk_etiqueta2 = tk2.Label(frame_wiki, text="Resumo da página:")
-wk_texto1 = tk.Text(frame_wiki, state='disabled')
-wk_etiqueta3 = tk2.Label(frame_wiki, text="Fonte:")
-wk_fonte = tk2.Entry(frame_wiki, width=50, state='readonly')
+wk_paned = tk2.Panedwindow(frame_wiki, orient=tk.VERTICAL)
+
+# Painel superior: busca
+wiki_top = tk2.Frame(wk_paned)
+wk_etiqueta1 = tk2.Label(wiki_top, text="Digite o título da página da Wikipedia:")
+wk_entrada1 = tk2.Entry(wiki_top)
+wk_botao1 = tk2.Button(wiki_top, text="Buscar", command=wk_buscar)
+wk_etiqueta1.pack(anchor="w", padx=5, pady=(5, 2))
+wk_entrada1.pack(fill=tk.X, padx=5, pady=2)
+wk_botao1.pack(anchor="w", padx=5, pady=2)
+
+# Painel inferior: resumo e fonte
+wiki_bottom = tk2.Frame(wk_paned)
+wk_etiqueta2 = tk2.Label(wiki_bottom, text="Resumo da página:")
+wk_texto1 = tk.Text(wiki_bottom, state='disabled')
+wk_etiqueta2.pack(anchor="w", padx=5, pady=(5, 2))
+wk_texto1.pack(fill=tk.BOTH, expand=True, padx=5, pady=2)
+
+fonte_container = tk2.Frame(wiki_bottom)
+wk_etiqueta3 = tk2.Label(fonte_container, text="Fonte:")
+wk_fonte = tk2.Entry(fonte_container, width=50, state='readonly')
+wk_etiqueta3.pack(side=tk.LEFT, padx=(0, 5))
+wk_fonte.pack(side=tk.LEFT, fill=tk.X, expand=True)
+fonte_container.pack(fill=tk.X, padx=5, pady=5)
+
+wk_paned.add(wiki_top, weight=1)
+wk_paned.add(wiki_bottom, weight=3)
 
 janelaPrincipal.mainloop()

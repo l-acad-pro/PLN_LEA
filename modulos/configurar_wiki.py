@@ -6,11 +6,13 @@ from modulos.utils import centralizar_janela
 def janela_wkcfg(jp, callback_atualizar, user_agent_atual):
     janela_wkcfg = tk.Toplevel(jp)
     janela_wkcfg.grab_set()
+    janela_wkcfg.lift()
+    janela_wkcfg.focus_set()
     
     # Centraliza a janela
     centralizar_janela(janela_wkcfg, jp)
     
-    label_wkcfg = tk2.Label(janela_wkcfg, text="Informe seu agente de usuário para usar a Wikipedia API:\nExemplo: Nome (Email)", justify="center")
+    label_wkcfg = tk2.Label(janela_wkcfg, text="Informe seu agente de usuário para usar a Wikipedia API:\n\nExemplo: Nome (Email)", justify="center")
     entry_wkcfg = tk2.Entry(janela_wkcfg, width=30)
     
     wk_lg_var = tk.StringVar(value="")
@@ -52,7 +54,7 @@ def janela_wkcfg(jp, callback_atualizar, user_agent_atual):
         janela_wkcfg.destroy()
 
     def selecionar_agent():
-        label_wkcfg.pack(padx=10, pady=10)
+        label_wkcfg.pack(padx=10, pady=(10, 0))
         entry_wkcfg.pack(padx=10, pady=10)
         btn_wkcfg.pack(padx=10, pady=10)
         
@@ -65,6 +67,6 @@ def janela_wkcfg(jp, callback_atualizar, user_agent_atual):
     if user_agent_atual:
         btn2_wkcfg.pack(padx=10, pady=5)
     else:
-        label_wkcfg.pack(padx=10, pady=10)
+        label_wkcfg.pack(padx=10, pady=(10, 0))
         entry_wkcfg.pack(padx=10, pady=10)
         btn_wkcfg.pack(padx=10, pady=10)

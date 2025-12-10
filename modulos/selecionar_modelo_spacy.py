@@ -7,6 +7,8 @@ from modulos.utils import centralizar_janela
 def abrir_janela_selecionar_modelo(jp):
     janelaSMS = tk.Toplevel(jp)
     janelaSMS.grab_set()
+    janelaSMS.lift()
+    janelaSMS.focus_set()
     centralizar_janela(janelaSMS, jp)
     label1 = ttk.Label(janelaSMS, text="Escolha o modelo:")
     label1.pack(padx=10, pady=10)

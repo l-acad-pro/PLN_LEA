@@ -6,6 +6,8 @@ from modulos.utils import centralizar_janela
 def abrir_janela_baixar_modelo(jp):
      janelaBMS = tk.Toplevel(jp)
      janelaBMS.grab_set()
+     janelaBMS.lift()
+     janelaBMS.focus_set()
      centralizar_janela(janelaBMS, jp)
      label1 = ttk.Label(janelaBMS, text="Informe o modelo a ser baixado:")
      label1.pack(padx=10, pady=5)
