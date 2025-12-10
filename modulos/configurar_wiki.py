@@ -13,13 +13,16 @@ def janela_wkcfg(jp, callback_atualizar, user_agent_atual):
     label_wkcfg = tk2.Label(janela_wkcfg, text="Informe seu agente de usuário para usar a Wikipedia API:\nExemplo: Nome (Email)", justify="center")
     entry_wkcfg = tk2.Entry(janela_wkcfg, width=30)
     
-    wk_lg_var = tk.StringVar(value="pt")
+    wk_lg_var = tk.StringVar(value="")
+
+    def atualizar_idioma():
+        callback_atualizar(user_agent_atual, wk_lg_var.get())
     
     label2_wkcfg = tk2.Label(janela_wkcfg, text="Selecione o idioma:")
     label2_wkcfg.pack(padx=10, pady=10)    
-    rdb_wkcfg = tk2.Radiobutton(janela_wkcfg, text="Português", variable=wk_lg_var, value="pt")
+    rdb_wkcfg = tk2.Radiobutton(janela_wkcfg, text="Português", variable=wk_lg_var, value="pt", command=atualizar_idioma)
     rdb_wkcfg.pack(padx=10, pady=5)
-    rdb_wkcfg2 = tk2.Radiobutton(janela_wkcfg, text="Inglês", variable=wk_lg_var, value="en")
+    rdb_wkcfg2 = tk2.Radiobutton(janela_wkcfg, text="Inglês", variable=wk_lg_var, value="en", command=atualizar_idioma)
     rdb_wkcfg2.pack(padx=10, pady=5)
     
     btn_wkcfg = tk2.Button(janela_wkcfg, text="Salvar configurações")

@@ -2,6 +2,7 @@ import wikipediaapi
 from tkinter import SOLID, messagebox, filedialog, simpledialog
 import tkinter as tk
 import tkinter.ttk as tk2
+import csv, json
 from modulos import baixar_modelo_spacy, selecionar_modelo_spacy, configurar_wiki
 
 USER_AGENT = None
@@ -10,11 +11,42 @@ wiki = None
 
 def atualizar_config_wiki(user_agent, idioma):
     global USER_AGENT, wk_lg, wiki
-    USER_AGENT = user_agent
-    wk_lg = idioma
-    # Recria o objeto wiki com as novas configurações
-    wiki = wikipediaapi.Wikipedia(language=wk_lg, user_agent=USER_AGENT)
-    messagebox.showinfo("Sucesso", f"Configurações atualizadas!\nIdioma: {idioma}\nUser Agent: {user_agent}")
+    if idioma:
+        wk_lg = idioma
+
+    if user_agent:
+        USER_AGENT = user_agent
+
+    # Só recria o objeto se ambos estiverem definidos; permite escolher idioma antes do user agent
+    if USER_AGENT and wk_lg:
+        wiki = wikipediaapi.Wikipedia(language=wk_lg, user_agent=USER_AGENT)
+        messagebox.showinfo("Sucesso", f"Configurações atualizadas!\nIdioma: {wk_lg}\nUser Agent: {USER_AGENT}")
+
+def abrir_arquivo():
+    caminho = filedialog.askopenfilename(
+        title="Selecione um arquivo de texto",
+        filetypes=[("Arquivo de texto", "*.txt")],
+        parent=janelaPrincipal
+    )
+    if not caminho:
+        return
+    try:
+        with open(caminho, "r", encoding="utf-8") as f:
+            conteudo = f.read()
+    except UnicodeDecodeError:
+        with open(caminho, "r", encoding="latin-1") as f:
+            conteudo = f.read()
+    except Exception as e:
+        messagebox.showerror("Erro ao abrir", f"Não foi possível abrir o arquivo:\n{e}")
+        return
+
+    # Garante que o frame de texto esteja visível
+    opcao_visualizacao.set("texto")
+    atualizar_visualizacao()
+
+    # Substitui o conteúdo do Text
+    Texto_texto.delete("1.0", tk.END)
+    Texto_texto.insert(tk.END, conteudo)
 
 def wk_buscar():
     global USER_AGENT, wk_lg
@@ -92,7 +124,7 @@ janelaPrincipal.config(menu=menu_bar)
 
 # Cria um menu "Arquivo"
 arquivo_menu = tk.Menu(menu_bar, tearoff=0)
-arquivo_menu.add_command(label="Abrir Arquivo")
+arquivo_menu.add_command(label="Abrir Arquivo", command=abrir_arquivo)
 arquivo_menu.add_separator()  # linha separadora
 arquivo_menu.add_command(label="Sair")
 menu_bar.add_cascade(label="Arquivo", menu=arquivo_menu)
