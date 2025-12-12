@@ -1,14 +1,13 @@
 """
 Módulo para seleção de modelo spaCy.
 Exibe janela para escolher entre os modelos instalados.
+Compatível com PyInstaller.
 """
 
-import spacy
 import tkinter as tk
 from tkinter import ttk, messagebox
-from spacy.util import get_installed_models
 from modulos.utils import centralizar_janela
-from . import configuracao
+from . import configuracao, recursos
 
 # Variáveis globais do modelo
 modelo = None
@@ -30,9 +29,15 @@ def abrir_janela_selecionar_modelo(janela_pai):
     etq_titulo = ttk.Label(janela, text="Escolha o modelo:")
     etq_titulo.pack(padx=10, pady=10)
     
-    modelos = list(get_installed_models())
-    combo_modelos = ttk.Combobox(janela, values=modelos)
+    # Usa função compatível com PyInstaller
+    modelos = recursos.listar_modelos_spacy_disponiveis()
+    
+    combo_modelos = ttk.Combobox(janela, values=modelos, state='readonly')
     combo_modelos.pack(padx=10, pady=10)
+    
+    # Seleciona o primeiro modelo por padrão
+    if modelos:
+        combo_modelos.current(0)
 
     def selecionar_modelo():
         """Carrega o modelo selecionado"""
@@ -48,7 +53,8 @@ def abrir_janela_selecionar_modelo(janela_pai):
             return
         
         try:
-            pln = spacy.load(modelo)
+            # Usa carregamento compatível com PyInstaller
+            pln = recursos.carregar_modelo_spacy(modelo)
             configuracao.salvar_configuracoes(spacy_modelo=modelo)
             messagebox.showinfo(
                 "Sucesso",

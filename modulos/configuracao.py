@@ -6,7 +6,7 @@ Compatível com Windows e Linux, inclusive empacotado com PyInstaller.
 
 import configparser
 import os
-import sys
+from . import recursos
 
 ARQUIVO_CONFIG = "config.ini"
 
@@ -19,13 +19,8 @@ def obter_caminho_config():
     Returns:
         Caminho absoluto do arquivo config.ini
     """
-    if getattr(sys, 'frozen', False):
-        # Executável PyInstaller
-        diretorio_base = os.path.dirname(sys.executable)
-    else:
-        # Desenvolvimento
-        diretorio_base = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
-    
+    # Usa diretório do executável para salvar config ao lado do .exe
+    diretorio_base = recursos.obter_diretorio_executavel()
     return os.path.join(diretorio_base, ARQUIVO_CONFIG)
 
 

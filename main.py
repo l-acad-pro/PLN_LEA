@@ -6,14 +6,19 @@ Utiliza NLTK e spaCy para processamento de texto em português e inglês.
 
 import wikipediaapi
 import re
+import sys
 from tkinter import messagebox, filedialog, simpledialog
 import tkinter as tk
 import tkinter.ttk as tk2
-import csv, json
+import csv
+import json
 import ttkbootstrap as tb
-from modulos import selecionar_modelo_spacy, configurar_wiki, ferramentas_nltk, ferramentas_spacy, configuracao
+from modulos import selecionar_modelo_spacy, configurar_wiki, ferramentas_nltk, ferramentas_spacy, configuracao, recursos
 
-# Configurações globais da Wikipedia
+# Configura NLTK para funcionar com PyInstaller
+recursos.configurar_nltk_data()
+
+# ===== CONFIGURAÇÕES GLOBAIS =====
 AGENTE_USUARIO = None
 wiki_idioma = None
 wiki = None
@@ -29,7 +34,12 @@ limite_inicio = None
 limite_fim = None
 texto_original = None
 
+# Variáveis para controle do processamento spaCy
+spacy_processado_completo = False
+spacy_dados_processados = []
 
+
+# ===== CLASSE TOOLTIP =====
 class Dica:
     """Exibe tooltip ao passar o mouse sobre um widget"""
     
@@ -76,6 +86,13 @@ class Dica:
         if self.janela_dica:
             self.janela_dica.destroy()
             self.janela_dica = None
+
+
+# ===== FUNÇÕES UTILITÁRIAS =====
+def fechar_programa():
+    """Encerra o programa de forma segura"""
+    janela_principal.destroy()
+    sys.exit(0)
 
 
 def atualizar_config_wiki(agente_usuario, idioma, mostrar_msg=True):
@@ -728,8 +745,8 @@ def carregar_configuracoes_salvas():
     
     if config['spacy_modelo']:
         try:
-            import spacy
-            selecionar_modelo_spacy.pln = spacy.load(config['spacy_modelo'])
+            # Usa carregamento compatível com PyInstaller
+            selecionar_modelo_spacy.pln = recursos.carregar_modelo_spacy(config['spacy_modelo'])
             selecionar_modelo_spacy.modelo = config['spacy_modelo']
         except Exception as e:
             print(f"Erro ao carregar modelo spaCy salvo: {e}")
@@ -745,7 +762,7 @@ menu_arquivo = tk.Menu(barra_menu, tearoff=0)
 menu_arquivo.add_command(label="Abrir Arquivo", accelerator="Ctrl+O", command=abrir_arquivo)
 janela_principal.bind("<Control-o>", lambda event: abrir_arquivo())
 menu_arquivo.add_separator()
-menu_arquivo.add_command(label="Sair")
+menu_arquivo.add_command(label="Sair", accelerator="Alt+F4", command=fechar_programa)
 barra_menu.add_cascade(label="Arquivo", menu=menu_arquivo)
 
 menu_corpora = tk.Menu(barra_menu, tearoff=0)
