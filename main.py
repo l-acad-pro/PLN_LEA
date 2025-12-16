@@ -776,7 +776,7 @@ barra_menu.add_cascade(label="Configurações", menu=menu_config)
 
 menu_ajuda = tk.Menu(barra_menu, tearoff=0)
 menu_ajuda.add_command(label="Etiquetas morfossintáticas (POS tags)", command=exibir_pos_tags)
-menu_ajuda.add_command(label="Sobre", command=lambda: messagebox.showinfo("Sobre", "Ferramenta de PLN para TCC"))
+menu_ajuda.add_command(label="Sobre", command=lambda: messagebox.showinfo("Sobre", "Software criado seguindos a filosofia de Software Livre do Robert Stallman."))
 barra_menu.add_cascade(label="Ajuda", menu=menu_ajuda)
 
 # === CONTAINER PRINCIPAL ===

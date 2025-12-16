@@ -1,21 +1,25 @@
 # PLN-LEA
 
-Projeto de Processamento de Linguagem Natural (PLN) com interface gráfica (Tkinter/ttkbootstrap), integrando NLTK, spaCy e consultas à Wikipedia.
+Software de tarefas básicas de Processamento de Linguagem Natural (PLN) com interface gráfica (Tkinter/ttkbootstrap), integrando NLTK, spaCy e consultas à Wikipedia.
 
-Este trabalho se trata de um pré-requisito para a obtenção do título em Bacharelado em Línguas Estrangeiras Aplicadas ao Multilinguismo e à Sociedade da Informação, desenvolvido na Universidade de Brasília (UnB).
+Este trabalho se trata de um pré-requisito para a obtenção do título em Bacharel em Línguas Estrangeiras Aplicadas ao Multilinguismo e à Sociedade da Informação, desenvolvido na Universidade de Brasília (UnB).
 
-## Visão Geral
-- Tokenização (palavras, frases, opções avançadas)
-- Lematização e etiquetagem morfossintática (spaCy)
-- Análise de sentimentos (TextBlob/NLTK)
+## Visão 
 - Consulta e extração de conteúdo da Wikipedia
-- Empacotamento com PyInstaller (executável standalone)
+- Corpora para testes em inglês e português
+- Tokenização de palavras e frases
+- Lematização e etiquetagem morfossintática
+- Análise de sentimentos
 
-## Requisitos
-- Python 3.10+
-- Ambiente virtual recomendado
-- Pacotes principais: `nltk`, `spacy`, `ttkbootstrap`, `wikipedia-api`, `textblob`
+
+
+## Características
+- Foi criado com Python na versão 3.12.8 isolado em um ambiente virtual usando `venv`
+- Bibliotecas padrão do Python: `tkinter`, `sys`, `os`, `subprocess`,`configparses`,`re`, `csv`, `json`
+- Bibliotecas externas: `tkinter`, `nltk`, `spacy`, `ttkbootstrap`, `wikipedia-api`, `spacytextblob`
 - Modelos spaCy: `pt_core_news_sm`, `en_core_web_sm`
+- Pacotes NLTK: `punkt`, `stopwords`, `machado`, `gutenberg`
+- Bibliotecas usadas fora do código: `pipreqs` e `pyinstaller`
 
 ## Instalação
 ```bash
