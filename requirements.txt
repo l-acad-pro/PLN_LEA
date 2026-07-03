@@ -1,4 +1,4 @@
-nltk==3.9.1
+nltk==3.9.4
 spacy==3.8.7
 spacytextblob==5.1.0
 ttkbootstrap==1.19.2
