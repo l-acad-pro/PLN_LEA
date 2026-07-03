@@ -135,22 +135,22 @@ def processar_completo(texto, pln, lematizar=False, etiquetar=False):
     """
     if pln is None:
         raise Exception("Nenhum modelo spaCy foi selecionado. Configure em Configurações > Selecionar Modelo SpaCy")
-    
+
     doc = pln(texto)
     resultados = []
-    
+
     for token in doc:
         if token.is_space:
             continue
-        
-        dados = [f"{token.text:<20}"]
+
+        dados = [token.text]
         if lematizar:
-            dados.append(f"{token.lemma_:<20}")
+            dados.append(token.lemma_)
         if etiquetar:
-            dados.append(f"{token.pos_:<10}")
-        
+            dados.append(token.pos_)
+
         resultados.append(tuple(dados))
-    
+
     return resultados
 
 
@@ -169,7 +169,7 @@ def formatar_processamento_completo(dados, lematizar=False, etiquetar=False):
     """
     linhas = []
     for item in dados:
-        linhas.append("".join(item))
+        linhas.append("\t".join(item))
     return "\n".join(linhas)
 
 

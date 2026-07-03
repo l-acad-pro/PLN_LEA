@@ -938,7 +938,7 @@ Dica(spacy_check_etiquetar, "Etiquetar (POS tag) atribui categorias gramaticais 
 spacy_btn_processar = tk2.Button(spacy_frame_opcoes, text="Processar", state='disabled', command=processar_tokenizacao)
 spacy_btn_processar.pack(side=tk.LEFT, padx=5)
 
-spacy_text = tk.Text(tab_spacy, state='disabled')
+spacy_text = tk.Text(tab_spacy, state='disabled', tabs="90p")
 spacy_text.pack(fill=tk.BOTH, expand=True, padx=5, pady=5)
 spacy_etq_total = tk2.Label(tab_spacy, text="")
 
@@ -1180,6 +1180,7 @@ texto_btn_limitar = tk2.Button(texto_frame_botoes, text="Limitar Caracteres", co
 frame_wiki = tk2.Frame(texto_notebook)
 wk_etq_busca = tk2.Label(frame_wiki, text="Digite o título da página da Wikipedia:", justify="center")
 wk_ent_busca = tk2.Entry(frame_wiki, width=30)
+wk_ent_busca.bind("<Return>", lambda event: wk_buscar())
 wk_btn_buscar = tk2.Button(frame_wiki, text="Buscar", command=wk_buscar)
 wk_etq_busca.pack(padx=5, pady=(5, 2))
 wk_ent_busca.pack(padx=5, pady=2)
