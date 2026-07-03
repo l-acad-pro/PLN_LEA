@@ -116,7 +116,7 @@ def etiquetar_tokens(texto, pln):
         raise Exception("Nenhum modelo spaCy foi selecionado. Configure em Configurações > Selecionar Modelo SpaCy")
     
     doc = pln(texto)
-    etiquetas = [(token.text, token.pos_) for token in doc if not token.is_space]
+    etiquetas = [(token.text, token.pos_) for token in doc if not token.is_space] # [(token.text, token.pos_) for token in doc if not token.is_space]
     return etiquetas
 
 
@@ -143,11 +143,11 @@ def processar_completo(texto, pln, lematizar=False, etiquetar=False):
         if token.is_space:
             continue
         
-        dados = [token.text]
+        dados = [f"{token.text:<20}"]
         if lematizar:
-            dados.append(token.lemma_)
+            dados.append(f"{token.lemma_:<20}")
         if etiquetar:
-            dados.append(token.pos_)
+            dados.append(f"{token.pos_:<10}")
         
         resultados.append(tuple(dados))
     
@@ -169,7 +169,7 @@ def formatar_processamento_completo(dados, lematizar=False, etiquetar=False):
     """
     linhas = []
     for item in dados:
-        linhas.append("\t".join(item))
+        linhas.append("".join(item))
     return "\n".join(linhas)
 
 
@@ -183,7 +183,7 @@ def formatar_etiquetas_para_exibicao(etiquetas):
     Returns:
         String formatada com tokens etiquetados
     """
-    return ", ".join([f"{token}/{tag}" for token, tag in etiquetas])
+    return ",".join([f"{token}/{tag}" for token, tag in etiquetas])
 
 
 def analisar_sentimento(texto, pln):
