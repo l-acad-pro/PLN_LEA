@@ -16,17 +16,13 @@ Este trabalho se trata de um pré-requisito para a obtenção do título em Bach
 ## Características
 - Foi criado com Python na versão 3.12.8 isolado em um ambiente virtual usando `venv`
 - Bibliotecas padrão do Python: `tkinter`, `sys`, `os`, `subprocess`,`configparses`,`re`, `csv`, `json`
-- Bibliotecas externas: `tkinter`, `nltk`, `spacy`, `ttkbootstrap`, `wikipedia-api`, `spacytextblob`
+- Bibliotecas externas: `nltk`, `spacy`, `ttkbootstrap`, `wikipedia-api`, `spacytextblob`
 - Modelos spaCy: `pt_core_news_sm`, `en_core_web_sm`
 - Pacotes NLTK: `punkt`, `stopwords`, `machado`, `gutenberg`
 - Bibliotecas usadas fora do código: `pipreqs` e `pyinstaller`
 
 ## Instalação
 ```bash
-# Criar e ativar ambiente (Windows PowerShell)
-python -m venv env_tcc
-./env_tcc/Scripts/Activate.ps1
-
 # Instalar dependências
 pip install -r requirements.txt
 

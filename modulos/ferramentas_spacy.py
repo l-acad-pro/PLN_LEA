@@ -172,20 +172,6 @@ def formatar_processamento_completo(dados, lematizar=False, etiquetar=False):
         linhas.append("\t".join(item))
     return "\n".join(linhas)
 
-
-def formatar_etiquetas_para_exibicao(etiquetas):
-    """
-    Formata lista de tuplas (token, etiqueta) para exibição.
-    
-    Args:
-        etiquetas: Lista de tuplas (token, etiqueta_POS)
-        
-    Returns:
-        String formatada com tokens etiquetados
-    """
-    return ",".join([f"{token}/{tag}" for token, tag in etiquetas])
-
-
 def analisar_sentimento(texto, pln):
     """
     Realiza análise de sentimento usando spacytextblob integrado ao spaCy.
