@@ -4,8 +4,6 @@ Funções para tokenização, remoção de stopwords e seleção de corpora.
 """
 
 import nltk
-import os
-import zipfile
 from nltk.tokenize import word_tokenize, sent_tokenize
 from nltk.corpus import gutenberg, machado
 import tkinter as tk
@@ -114,44 +112,6 @@ def formatar_tokens_para_exibicao(tokens):
     return ", ".join(tokens)
 
 
-def _obter_caminho_machado_zip():
-    """Localiza o arquivo machado.zip instalado pelo NLTK."""
-    try:
-        return str(nltk.data.find('corpora/machado.zip'))
-    except LookupError:
-        for pasta_base in nltk.data.path:
-            candidato = os.path.join(pasta_base, 'corpora', 'machado.zip')
-            if os.path.exists(candidato):
-                return candidato
-        raise
-
-
-def _listar_textos_machado():
-    """Lista os textos do corpus Machado lendo o ZIP diretamente."""
-    caminho_zip = _obter_caminho_machado_zip()
-    with zipfile.ZipFile(caminho_zip) as arquivo_zip:
-        return sorted(
-            nome for nome in arquivo_zip.namelist()
-            if nome.startswith('machado/') and nome.endswith('.txt')
-        )
-
-
-def _ler_texto_machado(arquivo):
-    """Lê um texto do corpus Machado diretamente do ZIP."""
-    caminho_zip = _obter_caminho_machado_zip()
-    with zipfile.ZipFile(caminho_zip) as arquivo_zip:
-        with arquivo_zip.open(arquivo) as arquivo_texto:
-            dados = arquivo_texto.read()
-
-    for codificacao in ('utf-8', 'latin-1'):
-        try:
-            return dados.decode(codificacao)
-        except UnicodeDecodeError:
-            pass
-
-    return dados.decode('utf-8', errors='replace')
-
-
 def verificar_corpora_disponiveis():
     """
     Verifica quais corpora estão disponíveis.
@@ -173,12 +133,8 @@ def verificar_corpora_disponiveis():
     try:
         info_corpora['machado']['textos'] = machado.fileids()
         info_corpora['machado']['disponivel'] = True
-    except (LookupError, AttributeError):
-        try:
-            info_corpora['machado']['textos'] = _listar_textos_machado()
-            info_corpora['machado']['disponivel'] = True
-        except Exception:
-            pass
+    except LookupError:
+        pass
     
     return info_corpora
 
@@ -198,10 +154,7 @@ def obter_texto_corpus(nome_corpus, arquivo):
         if nome_corpus == 'gutenberg':
             return gutenberg.raw(arquivo)
         elif nome_corpus == 'machado':
-            try:
-                return machado.raw(arquivo)
-            except (LookupError, AttributeError):
-                return _ler_texto_machado(arquivo)
+            return machado.raw(arquivo)
     except Exception as e:
         raise Exception(f"Erro ao carregar texto: {str(e)}")
 
@@ -230,7 +183,7 @@ def janela_selecionar_corpora(janela_pai, callback_carregar_texto):
     
     tk2.Label(
         frame_info,
-        text="Selecione um corpus e um texto:",
+        text="Selecione um corpus para carregar o texto:",
         font=('Arial', 10, 'bold')
     ).pack(anchor='w')
     
