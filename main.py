@@ -766,7 +766,8 @@ menu_arquivo.add_command(label="Sair", accelerator="Alt+F4", command=fechar_prog
 barra_menu.add_cascade(label="Arquivo", menu=menu_arquivo)
 
 menu_corpora = tk.Menu(barra_menu, tearoff=0)
-menu_corpora.add_command(label="Selecionar Corpus do NLTK", command=lambda: ferramentas_nltk.janela_selecionar_corpora(janela_principal, carregar_texto_corpus))
+menu_corpora.add_command(label="Selecionar Corpus do NLTK", accelerator="Alt+C", command=lambda: ferramentas_nltk.janela_selecionar_corpora(janela_principal, carregar_texto_corpus))
+janela_principal.bind("<Alt-c>", lambda event: ferramentas_nltk.janela_selecionar_corpora(janela_principal, carregar_texto_corpus))
 barra_menu.add_cascade(label="Corpora", menu=menu_corpora)
 
 menu_config = tk.Menu(barra_menu, tearoff=0)
@@ -775,8 +776,10 @@ menu_config.add_command(label="Selecionar Modelo SpaCy", command=lambda: selecio
 barra_menu.add_cascade(label="Configurações", menu=menu_config)
 
 menu_ajuda = tk.Menu(barra_menu, tearoff=0)
-menu_ajuda.add_command(label="Etiquetas morfossintáticas (POS tags)", command=exibir_pos_tags)
-menu_ajuda.add_command(label="Sobre", command=lambda: messagebox.showinfo("Sobre", "Software criado seguindos a filosofia de Software Livre do Robert Stallman."))
+menu_ajuda.add_command(label="Etiquetas morfossintáticas (POS tags)", accelerator="Alt+P", command=exibir_pos_tags)
+janela_principal.bind("<Alt-p>", lambda event: exibir_pos_tags())
+menu_ajuda.add_command(label="Sobre", accelerator="F1", command=lambda: messagebox.showinfo("Sobre", "Software criado seguindos a filosofia de Software Livre do Robert Stallman."))
+janela_principal.bind("<F1>", lambda event: messagebox.showinfo("Sobre", "Software criado seguindos a filosofia de Software Livre do Robert Stallman."))
 barra_menu.add_cascade(label="Ajuda", menu=menu_ajuda)
 
 # === CONTAINER PRINCIPAL ===
@@ -915,7 +918,8 @@ container_principal.bind("<Configure>", equalizar_larguras)
 tab_nltk = tk2.Frame(pln_notebook)
 nltk_etq_titulo = tk2.Label(tab_nltk, text="Processamento com NLTK")
 nltk_etq_titulo.pack(padx=5, pady=5)
-nltk_text = tk.Text(tab_nltk, state='disabled')
+nltk_text = tk.Text(tab_nltk, state='disabled', takefocus=False)
+configurar_foco_tab(nltk_text)
 nltk_text.pack(fill=tk.BOTH, expand=True, padx=5, pady=5)
 nltk_etq_total = tk2.Label(tab_nltk, text="")
 
@@ -938,7 +942,8 @@ Dica(spacy_check_etiquetar, "Etiquetar (POS tag) atribui categorias gramaticais 
 spacy_btn_processar = tk2.Button(spacy_frame_opcoes, text="Processar", state='disabled', command=processar_tokenizacao)
 spacy_btn_processar.pack(side=tk.LEFT, padx=5)
 
-spacy_text = tk.Text(tab_spacy, state='disabled', tabs="90p")
+spacy_text = tk.Text(tab_spacy, state='disabled', tabs="90p", takefocus=False)
+configurar_foco_tab(spacy_text)
 spacy_text.pack(fill=tk.BOTH, expand=True, padx=5, pady=5)
 spacy_etq_total = tk2.Label(tab_spacy, text="")
 
@@ -1057,6 +1062,7 @@ pln_notebook.bind("<<NotebookTabChanged>>", atualizar_dica_salvar)
 frame_texto = tk2.Frame(texto_notebook)
 texto_etq_instrucao = tk2.Label(frame_texto, text="Insira o texto ou importe um txt:")
 texto_text = tk.Text(frame_texto)
+configurar_foco_tab(texto_text)
 
 texto_frame_botoes = tk2.Frame(frame_texto)
 texto_etq_contador = tk2.Label(frame_texto, text="Caracteres: 0")
@@ -1203,7 +1209,8 @@ wk_btn_limitar_resumo.pack(side=tk.RIGHT, padx=2)
 wk_btn_limpar_resumo.pack(side=tk.RIGHT, padx=2)
 resumo_header.pack(fill=tk.X, padx=5, pady=(5, 2))
 
-wk_text_resumo = tk.Text(tab_resumo, state='disabled')
+wk_text_resumo = tk.Text(tab_resumo, state='disabled', takefocus=False)
+configurar_foco_tab(wk_text_resumo)
 wk_text_resumo.pack(fill=tk.BOTH, expand=True, padx=5, pady=2)
 wk_etq_contador_resumo = tk2.Label(tab_resumo, text="Caracteres: 0")
 
@@ -1219,7 +1226,8 @@ wk_btn_limitar_conteudo.pack(side=tk.RIGHT, padx=2)
 wk_btn_limpar_conteudo.pack(side=tk.RIGHT, padx=2)
 conteudo_header.pack(fill=tk.X, padx=5, pady=(5, 2))
 
-wk_text_conteudo = tk.Text(tab_conteudo, state='disabled')
+wk_text_conteudo = tk.Text(tab_conteudo, state='disabled', takefocus=False)
+configurar_foco_tab(wk_text_conteudo)
 wk_text_conteudo.pack(fill=tk.BOTH, expand=True, padx=5, pady=2)
 wk_etq_contador_conteudo = tk2.Label(tab_conteudo, text="Caracteres: 0")
 
@@ -1230,7 +1238,7 @@ wiki_sub_notebook.bind("<<NotebookTabChanged>>", lambda e: ocultar_etqs_sentimen
 
 # Fonte da Wikipedia
 wk_etq_fonte = tk2.Label(frame_wiki, text="Fonte:")
-wk_ent_fonte = tk2.Entry(frame_wiki, width=50, state='readonly')
+wk_ent_fonte = tk2.Entry(frame_wiki, width=50, state='readonly', takefocus=False)
 wk_etq_fonte.pack(side=tk.LEFT, pady=(5, 2))
 wk_ent_fonte.pack(side=tk.LEFT, padx=5, pady=2)
 
