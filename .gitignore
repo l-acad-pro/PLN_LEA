@@ -3,3 +3,5 @@ config.ini
 build.py
 modulos/build/*
 modulos/dist/*
+tempCodeRunnerFile.py
+.vscode/*
